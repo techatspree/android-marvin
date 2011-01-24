@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright 2010 akquinet Licensed under the Apache License, Version 2.0 
-    (the "License"); you may not use this file except in compliance with the 
-    License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 
-    Unless required by applicable law or agreed to in writing, software distributed 
-    under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES 
-    OR CONDITIONS OF ANY KIND, either express or implied. See the License for 
-    the specific language governing permissions and limitations under the License. -->
+<!--
+ Copyright 2010 akquinet
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -21,7 +28,7 @@
         <version>5</version>
     </parent>
 
-    <name>Marvin Project</name>
+    <name>akquinet Marvin Project</name>
     <description>Marvin is a instrumentation testing framework for Android.</description>
     <url>http://someurl</url>
     <inceptionYear>2010</inceptionYear>
@@ -86,6 +93,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
+                <version>2.1.2</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -137,47 +145,46 @@
                 <module>marvin-it</module>
             </modules>
         </profile>
-        <profile>
-            <!-- When enabled, this profile override the Sonatype distribution 
-                management -->
-            <id>ats.nexus</id>
-            <distributionManagement>
-                <repository>
-                    <id>${repo.releases.id}</id>
-                    <name>${repo.releases.name}</name>
-                    <url>${repo.releases.url}</url>
-                    <uniqueVersion>false</uniqueVersion>
-                </repository>
+    <profile>
+      <!--  When enabled, this profile override the Sonatype distribution management   -->
+      <id>ats.nexus</id>
+      <distributionManagement>
+        <repository>
+          <id>${repo.releases.id}</id>
+          <name>${repo.releases.name}</name>
+          <url>${repo.releases.url}</url>
+          <uniqueVersion>false</uniqueVersion>
+        </repository>
 
-                <snapshotRepository>
-                    <id>${repo.snapshots.id}</id>
-                    <name>${repo.snapshots.name}</name>
-                    <url>${repo.snapshots.url}</url>
-                    <uniqueVersion>false</uniqueVersion>
-                </snapshotRepository>
-            </distributionManagement>
-        </profile>
+        <snapshotRepository>
+          <id>${repo.snapshots.id}</id>
+          <name>${repo.snapshots.name}</name>
+          <url>${repo.snapshots.url}</url>
+          <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+      </distributionManagement>
+    </profile>
 
-        <profile>
-            <id>release</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
     </profiles>
 
 </project>
