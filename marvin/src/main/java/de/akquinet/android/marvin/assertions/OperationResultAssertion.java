@@ -78,7 +78,7 @@ public interface OperationResultAssertion<T extends Activity>
      *             if the matcher does not match on the given item within the
      *             given time frame
      */
-    ConjunctionAssertion<T> resultsIn(Object item, Matcher<T> matcher,
+    <S> ConjunctionAssertion<T> resultsIn(Object item, Matcher<S> matcher,
             long timeout, TimeUnit timeUnit);
 
     /**
@@ -173,7 +173,7 @@ class OperationResultAssertionImpl<T extends Activity> extends
         return new ConjunctionAssertionImpl<T>(context);
     }
 
-    public ConjunctionAssertion<T> resultsIn(Object item, Matcher<T> matcher,
+    public <S> ConjunctionAssertion<T> resultsIn(Object item, Matcher<S> matcher,
             long timeout, TimeUnit timeUnit) {
         try {
             WaitForConditionUtil.waitForCondition(item, matcher, timeout, timeUnit);

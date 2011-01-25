@@ -122,7 +122,7 @@ class ActivityAndResultAssertionImpl<T extends Activity>
     }
 
     @Override
-    public ConjunctionAssertion<T> resultsIn(Object item, Matcher<T> matcher,
+    public <S> ConjunctionAssertion<T> resultsIn(Object item, Matcher<S> matcher,
             long timeout, TimeUnit timeUnit) {
         return resultAssertion.resultsIn(item, matcher, timeout, timeUnit);
     }
