@@ -121,7 +121,6 @@
                 <artifactId>maven-release-plugin</artifactId>
                 <version>2.1</version>
                 <configuration>
-                    <tagBase>https://svn.spree.de/svn-repository/go-mobile/android/marvin/tags</tagBase>
                     <useReleaseProfile>true</useReleaseProfile>
                     <goals>deploy</goals>
                 </configuration>
@@ -135,12 +134,7 @@
 
     <profiles>
         <profile>
-            <id>includeItTests</id>
-            <activation>
-                <property>
-                    <name>!skipTests</name>
-                </property>
-            </activation>
+            <id>it</id>
             <modules>
                 <module>marvin-it</module>
             </modules>
