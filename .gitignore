@@ -1,2 +1,6 @@
-/marvin-it/target/
-/marvin/target/
+bin
+gen
+target
+/.project
+/.classpath
+/.settings
