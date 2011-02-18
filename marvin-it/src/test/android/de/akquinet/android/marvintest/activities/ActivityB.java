@@ -15,8 +15,65 @@
 package de.akquinet.android.marvintest.activities;
 
 import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 
 
 public class ActivityB extends Activity
 {
+	public static final int CONTENT_VIEW_ID = 98765;
+	public static final int BUTTON_ID = 56789;
+	public static final int EDIT_TEXT_ID = 75689;
+	public static final int LONG_CLICK = 2;
+	public static final int CLICK = 1;
+	
+	public ViewGroup viewGroup;
+	public int clickIdentifier = -1;
+	
+    @Override
+	protected void onCreate(Bundle savedInstanceState) {
+    	viewGroup = new LinearLayout(this);
+    	viewGroup.setPadding(0, 100, 0, 0);
+    	viewGroup.setOnLongClickListener(new OnLongClickListener(){
+
+			@Override
+			public boolean onLongClick(View arg0) {
+				clickIdentifier = LONG_CLICK;
+				return true;
+			}
+    		
+    	});
+    	
+    	viewGroup.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				clickIdentifier = CLICK;
+			}		
+    	});
+    	
+    	viewGroup.setId(CONTENT_VIEW_ID);
+    	
+    	View view=new Button(this);
+    	view.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+    	view.setId(BUTTON_ID);
+    	view.setFocusable(true);
+    	viewGroup.addView(view);
+    	
+    	EditText textView = new EditText(this);
+    	textView.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+    	textView.setId(EDIT_TEXT_ID);
+    	textView.setFocusable(true);
+    	viewGroup.addView(textView);
+    	
+    	setContentView(viewGroup);
+		super.onCreate(savedInstanceState);
+	}
 }

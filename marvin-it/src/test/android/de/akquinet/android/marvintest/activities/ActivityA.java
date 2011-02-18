@@ -21,7 +21,8 @@ import de.akquinet.android.marvintest.util.TestUtils;
 
 
 public class ActivityA extends Activity {
-    @Override
+	
+	@Override
     protected void onResume() {
         new AsyncTask<Void, Void, Void>() {
             @Override
