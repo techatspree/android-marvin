@@ -22,15 +22,13 @@ import org.hamcrest.Matchers;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
+import android.view.KeyEvent;
 import android.view.View;
 import de.akquinet.android.marvin.testcase.MarvinTestCase;
-import de.akquinet.android.marvintest.activities.ActivityA;
-import de.akquinet.android.marvintest.activities.ActivityB;
-import de.akquinet.android.marvintest.activities.ActivityC;
+import de.akquinet.android.marvintest.activities.*;
 
 /*
- * TODO: waitForIdle, resultsIn, finish, flipOrientation, key, keyDownUp,
- * sleep, doNothing
+ * TODO: resultsIn, doNothing
  */
 
 public class ActivityControlTest extends MarvinTestCase {
@@ -39,11 +37,121 @@ public class ActivityControlTest extends MarvinTestCase {
         super.setUp();
         assertEmptyActivityList();
     }
-
+    
     @Override
     protected void tearDown() throws Exception {
         super.tearDown();
         assertEmptyActivityList();
+    }
+    
+    
+    public void testWaitForIdle()
+    {
+    	 assertEmptyActivityList();
+
+         ActivityD startActivity = startActivity(ActivityD.class);
+         MatcherAssert.assertThat(startActivity, is(notNullValue()));
+         
+         // @formatter:off
+         assertThat(startActivity)
+         		.waitForIdle();
+         // @formatter:on
+            
+         MatcherAssert.assertThat(startActivity.finished,is(true));
+    }
+    
+    //TODO: fails
+    public void testKeyDownUp()
+    {
+    	 assertEmptyActivityList();
+
+         ActivityC startActivity = startActivity(ActivityC.class);
+         MatcherAssert.assertThat(startActivity, is(notNullValue()));
+         
+         startActivity.findViewById(ActivityC.CONTENT_VIEW_ID).requestFocus();
+         
+         // @formatter:off
+         assertThat(startActivity)
+         		.waitForIdle()
+         		.keyDownUp(KeyEvent.KEYCODE_A)
+         		.waitForIdle();
+         // @formatter:on
+            
+         MatcherAssert.assertThat(startActivity.keyIdentifier,is(equalTo(KeyEvent.KEYCODE_A)));
+         MatcherAssert.assertThat(startActivity.actionIdentifierDown,is(true));
+         MatcherAssert.assertThat(startActivity.actionIdentifierUp,is(true));
+    }
+    
+    //TODO: fails
+    public void testKey()
+    {
+    	 assertEmptyActivityList();
+
+         ActivityC startActivity = startActivity(ActivityC.class);
+         MatcherAssert.assertThat(startActivity, is(notNullValue()));
+         
+         startActivity.findViewById(ActivityC.CONTENT_VIEW_ID).requestFocus();
+         
+         // @formatter:off
+         assertThat(startActivity)
+         		.waitForIdle()
+         		.key(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_A))
+         		.waitForIdle();
+         // @formatter:on
+            
+         MatcherAssert.assertThat(startActivity.keyIdentifier,is(equalTo(KeyEvent.KEYCODE_A)));
+         MatcherAssert.assertThat(startActivity.actionIdentifierDown,is(true));
+    }
+    
+    public void testSleep()
+    {
+    	 assertEmptyActivityList();
+
+         ActivityB startActivity = startActivity(ActivityB.class);
+         MatcherAssert.assertThat(startActivity, is(notNullValue()));
+         
+         long beforeSleep = System.currentTimeMillis();
+         
+         // @formatter:off
+         assertThat(startActivity)
+         		.sleep(5000);
+         // @formatter:on
+            
+         MatcherAssert.assertThat(System.currentTimeMillis(),is(greaterThan(beforeSleep+5000)));
+    }
+    
+    
+    public void testFinish()
+    {
+    	 assertEmptyActivityList();
+
+         ActivityB startActivity = startActivity(ActivityB.class);
+         MatcherAssert.assertThat(startActivity, is(notNullValue()));
+         
+         // @formatter:off
+         assertThat(startActivity)
+         		.waitForIdle()
+         		.and()
+         		.finish();
+         // @formatter:on
+            
+         MatcherAssert.assertThat(startActivity.isFinishing(),is(true));
+    }
+    
+    public void testFlipOrientation()
+    {
+    	 assertEmptyActivityList();
+
+         ActivityB startActivity = startActivity(ActivityB.class);
+         MatcherAssert.assertThat(startActivity, is(notNullValue()));
+         int startOrientation = startActivity.getRequestedOrientation();
+         
+         // @formatter:off
+         assertThat(startActivity)
+         		.flipOrientation()
+         		.waitForIdle();
+         // @formatter:on
+         MatcherAssert.assertThat(startActivity.getRequestedOrientation(), is(not(equalTo(startOrientation))));
     }
     
     
@@ -59,7 +167,8 @@ public class ActivityControlTest extends MarvinTestCase {
          
          // @formatter:off
          assertThat(startActivity)
-         		.sendString("true");
+         		.sendString("true")
+         		.waitForIdle();
          // @formatter:on
          MatcherAssert.assertThat(((android.widget.TextView) editText).getText().toString(), is(equalTo("true")));
     }
@@ -79,6 +188,7 @@ public class ActivityControlTest extends MarvinTestCase {
         
         // @formatter:off
         assertThat(startActivity)
+ 				.waitForIdle()
         		.focus(50, y+1)
         		.waitForIdle();
         // @formatter:on
@@ -93,6 +203,7 @@ public class ActivityControlTest extends MarvinTestCase {
         
         // @formatter:off
         assertThat(startActivity)
+ 				.waitForIdle()
         		.clickLong(50, 50)
         		.waitForIdle();
         // @formatter:on
@@ -107,6 +218,7 @@ public class ActivityControlTest extends MarvinTestCase {
         
         // @formatter:off
         assertThat(startActivity)
+				.waitForIdle()
         		.click(50, 50)
         		.waitForIdle();
         // @formatter:on
@@ -121,6 +233,8 @@ public class ActivityControlTest extends MarvinTestCase {
         
         // @formatter:off
         assertThat(startActivity)
+ 				.waitForIdle()
+ 				.and()
         		.rootView()
         		.equals(startActivity.findViewById(ActivityB.CONTENT_VIEW_ID).getRootView());
         // @formatter:on
@@ -134,10 +248,14 @@ public class ActivityControlTest extends MarvinTestCase {
         
         // @formatter:off
         assertThat(startActivity)
+				.waitForIdle()
+				.and()
         		.view(ActivityB.CONTENT_VIEW_ID)
         		.equals(startActivity.findViewById(ActivityB.CONTENT_VIEW_ID));
         
         assertThat(startActivity)
+ 				.waitForIdle()
+ 				.and()
 				.view(startActivity.viewGroup)
 				.equals(startActivity.findViewById(ActivityB.CONTENT_VIEW_ID));
         
@@ -154,6 +272,8 @@ public class ActivityControlTest extends MarvinTestCase {
         
         // @formatter:off
         assertThat(startActivity)
+ 				.waitForIdle()
+ 				.and()
         		.setOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         // @formatter:on
         

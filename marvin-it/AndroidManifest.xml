@@ -10,6 +10,7 @@
         <activity android:name=".activities.ActivityA"></activity>
         <activity android:name=".activities.ActivityB"></activity>
         <activity android:name=".activities.ActivityC"></activity>
+        <activity android:name=".activities.ActivityD"></activity>
 
         <service android:name=".services.AdderAndroidService"></service>
     </application>
