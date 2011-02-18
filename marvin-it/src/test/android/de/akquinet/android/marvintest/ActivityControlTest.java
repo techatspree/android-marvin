@@ -24,11 +24,12 @@ import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.view.KeyEvent;
 import android.view.View;
+import de.akquinet.android.marvin.matchers.Condition;
 import de.akquinet.android.marvin.testcase.MarvinTestCase;
 import de.akquinet.android.marvintest.activities.*;
 
 /*
- * TODO: resultsIn, doNothing
+ * TODO: doNothing
  */
 
 public class ActivityControlTest extends MarvinTestCase {
@@ -44,6 +45,59 @@ public class ActivityControlTest extends MarvinTestCase {
         assertEmptyActivityList();
     }
     
+    public void testResultsInRunnable()
+    {
+    	 assertEmptyActivityList();
+
+         final ActivityD startActivity = startActivity(ActivityD.class);
+         MatcherAssert.assertThat(startActivity, is(notNullValue()));
+         
+         // @formatter:off
+         assertThat(startActivity)
+         		.waitForIdle()
+         		.resultsIn(new Runnable(){
+
+					@Override
+					public void run() {
+						sleep(5000);
+						MatcherAssert.assertThat(startActivity.finished,is(true));					
+					}
+         			
+         		});
+         // @formatter:on
+    }
+    
+	public void testResultsInCondition() {
+		assertEmptyActivityList();
+
+		final ActivityD startActivity = startActivity(ActivityD.class);
+		MatcherAssert.assertThat(startActivity, is(notNullValue()));
+
+		// @formatter:off
+         assertThat(startActivity)
+         		.waitForIdle()
+         		.resultsIn(new Condition("Test resultsIn with Condition") {
+                    @Override
+                    public boolean matches() {
+                        return startActivity.finished == true;
+                    }
+                }, 10, TimeUnit.SECONDS);
+         // @formatter:on
+	}
+    
+    public void testResultsInMatcher()
+    {
+    	 assertEmptyActivityList();
+
+         ActivityD startActivity = startActivity(ActivityD.class);
+         MatcherAssert.assertThat(startActivity, is(notNullValue()));
+         
+         // @formatter:off
+         assertThat(startActivity)
+         		.waitForIdle()
+         		.resultsIn(startActivity.finished, Matchers.equalTo(true), 10, TimeUnit.SECONDS);
+         // @formatter:on
+    }
     
     public void testWaitForIdle()
     {

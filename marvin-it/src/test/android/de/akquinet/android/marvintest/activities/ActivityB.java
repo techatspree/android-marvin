@@ -25,6 +25,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 
 public class ActivityB extends Activity
@@ -32,6 +33,8 @@ public class ActivityB extends Activity
 	public static final int CONTENT_VIEW_ID = 98765;
 	public static final int BUTTON_ID = 56789;
 	public static final int EDIT_TEXT_ID = 75689;
+	public static final int TEXT_VIEW_ID = 98567;
+	
 	public static final int LONG_CLICK = 2;
 	public static final int CLICK = 1;
 	
@@ -68,10 +71,19 @@ public class ActivityB extends Activity
     	view.setFocusable(true);
     	viewGroup.addView(view);
     	
-    	EditText textView = new EditText(this);
+    	EditText editText = new EditText(this);
+    	editText.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+    	editText.setId(EDIT_TEXT_ID);
+    	editText.setFocusable(true);
+    	viewGroup.addView(editText);
+    	
+    	TextView textView = new TextView(this);
     	textView.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-    	textView.setId(EDIT_TEXT_ID);
-    	textView.setFocusable(true);
+    	editText.setId(TEXT_VIEW_ID);
+    	editText.setText("42");
+    	editText.setVisibility(View.GONE);
+    	editText.setEnabled(false);
+    	
     	viewGroup.addView(textView);
     	
     	setContentView(viewGroup);
