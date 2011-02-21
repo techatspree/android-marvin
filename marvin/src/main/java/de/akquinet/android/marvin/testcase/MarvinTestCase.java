@@ -112,10 +112,17 @@ public class MarvinTestCase extends InstrumentationTestCase {
      * @param activityClasses
      *            the activity types not to be finished on {@link #tearDown()}
      */
-    public final void leaveRunningAfterTearDown(
+	public final void leaveRunningAfterTearDown(
             Class<? extends Activity>... activityClasses) {
         for (Class<? extends Activity> activityClass : activityClasses) {
             tearDownActions.put(activityClass, TearDownAction.LEAVE_RUNNING);
+        }
+    }
+	
+	public final void stopRunningWithTearDown(
+            Class<? extends Activity>... activityClasses) {
+        for (Class<? extends Activity> activityClass : activityClasses) {
+        	tearDownActions.put(activityClass,TearDownAction.FINISH);
         }
     }
 

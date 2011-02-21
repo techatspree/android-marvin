@@ -50,6 +50,11 @@ public class ActivityC extends Activity
     	});
     	
     	setContentView(layout);
+    	
+    	layout.setFocusable(true);
+    	layout.setFocusableInTouchMode(true);
+    	layout.requestFocus();
+    	
     	super.onCreate(savedInstanceState);
     }
 }

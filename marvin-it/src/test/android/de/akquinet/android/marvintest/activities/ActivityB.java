@@ -15,7 +15,6 @@
 package de.akquinet.android.marvintest.activities;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,13 +37,15 @@ public class ActivityB extends Activity
 	public static final int LONG_CLICK = 2;
 	public static final int CLICK = 1;
 	
-	public ViewGroup viewGroup;
+	public LinearLayout viewGroup;
 	public int clickIdentifier = -1;
 	
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
     	viewGroup = new LinearLayout(this);
     	viewGroup.setPadding(0, 100, 0, 0);
+    	viewGroup.setOrientation(LinearLayout.VERTICAL);
+    	
     	viewGroup.setOnLongClickListener(new OnLongClickListener(){
 
 			@Override
@@ -65,25 +66,27 @@ public class ActivityB extends Activity
     	
     	viewGroup.setId(CONTENT_VIEW_ID);
     	
-    	View view=new Button(this);
-    	view.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-    	view.setId(BUTTON_ID);
-    	view.setFocusable(true);
-    	viewGroup.addView(view);
+    	View button=new Button(this);
+    	button.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+    	button.setId(BUTTON_ID);
+    	button.setFocusable(true);
+    	button.setFocusableInTouchMode(true);
+    	viewGroup.addView(button);
     	
     	EditText editText = new EditText(this);
     	editText.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
     	editText.setId(EDIT_TEXT_ID);
     	editText.setFocusable(true);
+    	editText.setFocusableInTouchMode(true);
+    	editText.requestFocus();
     	viewGroup.addView(editText);
     	
     	TextView textView = new TextView(this);
     	textView.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-    	editText.setId(TEXT_VIEW_ID);
-    	editText.setText("42");
-    	editText.setVisibility(View.GONE);
-    	editText.setEnabled(false);
-    	
+    	textView.setId(TEXT_VIEW_ID);
+    	textView.setText("42");
+    	textView.setVisibility(View.GONE);
+    	textView.setEnabled(false);	
     	viewGroup.addView(textView);
     	
     	setContentView(viewGroup);

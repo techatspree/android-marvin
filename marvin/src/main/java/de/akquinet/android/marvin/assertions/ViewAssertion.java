@@ -238,7 +238,7 @@ class ViewAssertionImpl<T extends Activity> extends MarvinBaseAssertion<T>
             Assert.fail("View is non-TextView");
         }
 
-        Assert.assertEquals(text, ((TextView) view).getText());
+        Assert.assertEquals(text, ((TextView) view).getText().toString());
         return new ConjunctionAssertionImpl<T>(context);
     }
 

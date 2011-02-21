@@ -70,9 +70,9 @@ class ActivityAndResultAssertionImpl<T extends Activity>
         return activityAssertion.sendString(text);
     }
 
-    public OperationResultAssertion<T> focus(float x, float y) {
-        return activityAssertion.focus(x, y);
-    }
+//    public OperationResultAssertion<T> focus(float x, float y) {
+//        return activityAssertion.focus(x, y);
+//    }
 
     public OperationResultAssertion<T> click(float x, float y) {
         return activityAssertion.click(x, y);
