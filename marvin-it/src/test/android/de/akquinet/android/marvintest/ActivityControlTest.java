@@ -162,7 +162,7 @@ public class ActivityControlTest extends MarvinTestCase {
          // @formatter:on
 
 		MatcherAssert.assertThat(System.currentTimeMillis(),
-				is(greaterThan(beforeSleep + 5000)));
+				is(greaterThanOrEqualTo(beforeSleep + 5000)));
 	}
 
 	public void testFinish() {
@@ -242,7 +242,7 @@ public class ActivityControlTest extends MarvinTestCase {
 
 		ActivityB startActivity = startActivity(ActivityB.class);
 		MatcherAssert.assertThat(startActivity, is(notNullValue()));
-
+		
 		// @formatter:off
         assertThat(startActivity)
  				.waitForIdle()
@@ -257,8 +257,8 @@ public class ActivityControlTest extends MarvinTestCase {
 		assertEmptyActivityList();
 
 		ActivityB startActivity = startActivity(ActivityB.class);
-		MatcherAssert.assertThat(startActivity, is(notNullValue()));
-
+		MatcherAssert.assertThat(startActivity, is(notNullValue()));	
+		
 		// @formatter:off
         assertThat(startActivity)
 				.waitForIdle()

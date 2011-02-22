@@ -17,7 +17,6 @@ package de.akquinet.android.marvintest.activities;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -45,7 +44,8 @@ public class ActivityB extends Activity
     	viewGroup = new LinearLayout(this);
     	viewGroup.setPadding(0, 100, 0, 0);
     	viewGroup.setOrientation(LinearLayout.VERTICAL);
-    	
+    	viewGroup.setId(CONTENT_VIEW_ID);
+
     	viewGroup.setOnLongClickListener(new OnLongClickListener(){
 
 			@Override
@@ -64,15 +64,17 @@ public class ActivityB extends Activity
 			}		
     	});
     	
-    	viewGroup.setId(CONTENT_VIEW_ID);
+    	setContentView(viewGroup);
     	
-    	View button=new Button(this);
+    	Button button=new Button(this);
     	button.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
     	button.setId(BUTTON_ID);
+    	button.setText("I'm feeling very depressed");
     	button.setFocusable(true);
     	button.setFocusableInTouchMode(true);
+    	button.setClickable(true);
     	viewGroup.addView(button);
-    	
+
     	EditText editText = new EditText(this);
     	editText.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
     	editText.setId(EDIT_TEXT_ID);
@@ -89,7 +91,6 @@ public class ActivityB extends Activity
     	textView.setEnabled(false);	
     	viewGroup.addView(textView);
     	
-    	setContentView(viewGroup);
 		super.onCreate(savedInstanceState);
 	} 
 }

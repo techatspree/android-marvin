@@ -96,7 +96,7 @@ public interface InstrumentationAssertion<T extends Activity> {
      * @param y
      *            the y coordinate of the view to focus
      */
-    //OperationResultAssertion<T> focus(float x, float y);
+//    OperationResultAssertion<T> focus(float x, float y);
 
     /**
      * <p>
