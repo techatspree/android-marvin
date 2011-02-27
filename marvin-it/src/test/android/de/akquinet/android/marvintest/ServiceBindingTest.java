@@ -25,13 +25,13 @@ import junit.framework.Assert;
 import org.hamcrest.MatcherAssert;
 
 import android.os.IBinder;
-import de.akquinet.android.marvin.testcase.MarvinTestCase;
+import de.akquinet.android.marvin.AndroidTestCase;
 import de.akquinet.android.marvintest.services.AdderAndroidService;
 import de.akquinet.android.marvintest.services.AdderAndroidService.AdderService;
 import de.akquinet.android.marvintest.services.NonExistingServiceImpl;
 
 
-public class ServiceBindingTest extends MarvinTestCase {
+public class ServiceBindingTest extends AndroidTestCase {
     /**
      * See if we can synchronously bind to a service.
      */

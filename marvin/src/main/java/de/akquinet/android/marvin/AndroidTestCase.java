@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.akquinet.android.marvin.testcase;
+package de.akquinet.android.marvin;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -24,7 +24,10 @@ import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import junit.framework.Assert;
+
 import org.hamcrest.Matcher;
+import org.hamcrest.MatcherAssert;
 
 import android.app.Activity;
 import android.app.Instrumentation;
@@ -33,15 +36,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.test.InstrumentationTestCase;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
-import de.akquinet.android.marvin.assertions.ActivityAndResultAssertion;
-import de.akquinet.android.marvin.assertions.ActivityAssertion;
-import de.akquinet.android.marvin.assertions.AssertionFactory;
-import de.akquinet.android.marvin.assertions.ConjunctionAssertion;
-import de.akquinet.android.marvin.assertions.OperationResultAssertion;
-import de.akquinet.android.marvin.assertions.ViewAssertion;
+import de.akquinet.android.marvin.actions.ActionFactory;
+import de.akquinet.android.marvin.actions.ActivityAction;
 import de.akquinet.android.marvin.matchers.Condition;
 import de.akquinet.android.marvin.matchers.util.WaitForConditionUtil;
 import de.akquinet.android.marvin.monitor.ExtendedActivityMonitor;
@@ -51,14 +53,14 @@ import de.akquinet.android.marvin.util.TemporaryServiceConnection;
 
 /**
  * <p>
- * Base instrumentation test case class for Marvin tests. It provides methods to
- * control activites, bind to services and define various assertions.
+ * Base test case class for Marvin tests. It provides methods to control
+ * activites, bind to services and define various assertions.
  * 
  * <p>
- * Every activity that is started directly or indirectly within a Marvin test
- * method is finished automatically on {@link #tearDown()} to ensure a clean
- * state for following tests. If you want to leave certain activities running,
- * you can make use of method {@link #leaveRunningAfterTearDown(Class...)}.
+ * Every activity that is started directly or indirectly within a test method is
+ * finished automatically on {@link #tearDown()} to ensure a clean state for
+ * following tests. If you want to leave certain activities running, you can
+ * make use of method {@link #leaveRunningAfterTearDown(Class...)}.
  * 
  * <p>
  * When overwriting {@link #setUp()} or {@link #tearDown()}, you must call the
@@ -66,7 +68,7 @@ import de.akquinet.android.marvin.util.TemporaryServiceConnection;
  * 
  * @author Philipp Kumar
  */
-public class MarvinTestCase extends InstrumentationTestCase {
+public class AndroidTestCase extends InstrumentationTestCase {
     /** Activity monitor keeping track of started activites */
     protected ExtendedActivityMonitor activityMonitor;
 
@@ -87,44 +89,6 @@ public class MarvinTestCase extends InstrumentationTestCase {
     /*
      * 
      */
-
-    /**
-     * Returns the most recently started {@link Activity}. In most cases, this
-     * will be the activity currently visible on screen.
-     */
-    public final Activity getMostRecentlyStartedActivity() {
-        return this.activityMonitor.getMostRecentlyStartedActivity();
-    }
-
-    /**
-     * <p>
-     * Define certain Activity types as to be left running even after
-     * {@link #tearDown()}.
-     * 
-     * <p>
-     * Per default, an activity started during {@link #setUp()} as well as
-     * during the test method run itself is finished on {@link #tearDown()},
-     * even those that are not explicitely started from the test. To prevent
-     * this for certain activity types, call this method. Activities of the
-     * given types will be left running until instrumentation finishes (in
-     * general, this is after the whole test suite is finished).
-     * 
-     * @param activityClasses
-     *            the activity types not to be finished on {@link #tearDown()}
-     */
-	public final void leaveRunningAfterTearDown(
-            Class<? extends Activity>... activityClasses) {
-        for (Class<? extends Activity> activityClass : activityClasses) {
-            tearDownActions.put(activityClass, TearDownAction.LEAVE_RUNNING);
-        }
-    }
-	
-	public final void stopRunningWithTearDown(
-            Class<? extends Activity>... activityClasses) {
-        for (Class<? extends Activity> activityClass : activityClasses) {
-        	tearDownActions.put(activityClass,TearDownAction.FINISH);
-        }
-    }
 
     /**
      * Launches a new {@link Activity} of the given type, wait for it to start
@@ -193,17 +157,156 @@ public class MarvinTestCase extends InstrumentationTestCase {
     }
 
     /**
+     * <p>
+     * Sends an up and down key event sync to the currently focused window.
+     * 
+     * <p>
+     * Example: <code>keyDownUp(KeyEvent.KEYCODE_DPAD_DOWN)</code>
+     * 
+     * <p>
+     * You can only do this if the currently focused window belongs to the
+     * application under test. In particular, this method will fail while the
+     * key lock is active.
+     * 
+     * @param key
+     *            The integer keycode for the event.
+     * @see KeyEvent
+     */
+    public void keyDownUp(int key) {
+        getInstrumentation().sendKeyDownUpSync(key);
+
+    }
+
+    /**
+     * <p>
+     * Sends a key event to the currently focused window.
+     * 
+     * <p>
+     * Example: <code>keyDownUp(KeyEvent.KEYCODE_DPAD_DOWN)</code>
+     * 
+     * <p>
+     * You can only do this if the currently focused window belongs to the
+     * application under test. In particular, this method will fail while the
+     * key lock is active.
+     * 
+     * @param event
+     *            The key event.
+     * @see KeyEvent
+     */
+    public void key(KeyEvent event) {
+        getInstrumentation().sendKeySync(event);
+
+    }
+
+    /**
+     * <p>
+     * Sends the key events corresponding to the given text to the currently
+     * focused window.
+     * 
+     * <p>
+     * You can only do this if the currently focused window belongs to the
+     * application under test. In particular, this method will fail while the
+     * key lock is active.
+     * 
+     * @param text
+     *            The text to be sent.
+     */
+    public void sendString(String text) {
+        getInstrumentation().sendStringSync(text);
+
+    }
+
+    /**
+     * <p>
+     * Clicks the view at the given coordinates.
+     * 
+     * <p>
+     * You can only do this if the currently focused window belongs to the
+     * application under test. In particular, this method will fail while the
+     * key lock is active.
+     * 
+     * @param x
+     *            the x coordinate of the view to click
+     * @param y
+     *            the y coordinate of the view to click
+     */
+    public void click(float x, float y) {
+        MotionEvent downEvent = MotionEvent.obtain(SystemClock.uptimeMillis(),
+                SystemClock.uptimeMillis(), MotionEvent.ACTION_DOWN, x, y, 0);
+        MotionEvent upEvent = MotionEvent.obtain(SystemClock.uptimeMillis(),
+                SystemClock.uptimeMillis(), MotionEvent.ACTION_UP, x, y, 0);
+        try {
+            getInstrumentation().sendPointerSync(downEvent);
+            getInstrumentation().sendPointerSync(upEvent);
+        }
+        catch (SecurityException e) {
+            Assert.fail("Click on (" + x + "," + y + ") failed.");
+        }
+    }
+
+    /**
+     * Synchronously waits until the application becomes idle.
+     */
+    public void waitForIdle() {
+        getInstrumentation().waitForIdleSync();
+        try {
+            Thread.sleep(1000);
+        }
+        catch (InterruptedException e) {
+            // ignore
+        }
+        getInstrumentation().waitForIdleSync();
+    }
+
+    /**
+     * Returns the most recently started {@link Activity}. In most cases, this
+     * will be the activity currently visible on screen.
+     */
+    public final Activity getMostRecentlyStartedActivity() {
+        return this.activityMonitor.getMostRecentlyStartedActivity();
+    }
+
+    /**
+     * <p>
+     * Define certain Activity types as to be left running even after
+     * {@link #tearDown()}.
+     * 
+     * <p>
+     * Per default, an activity started during {@link #setUp()} as well as
+     * during the test method run itself is finished on {@link #tearDown()},
+     * even those that are not explicitely started from the test. To prevent
+     * this for certain activity types, call this method. Activities of the
+     * given types will be left running until instrumentation finishes (in
+     * general, this is after the whole test suite is finished).
+     * 
+     * @param activityClasses
+     *            the activity types not to be finished on {@link #tearDown()}
+     */
+    public final void leaveRunningAfterTearDown(
+            Class<? extends Activity>... activityClasses) {
+        for (Class<? extends Activity> activityClass : activityClasses) {
+            tearDownActions.put(activityClass, TearDownAction.LEAVE_RUNNING);
+        }
+    }
+
+    public final void finishOnTearDown(
+            Class<? extends Activity>... activityClasses) {
+        for (Class<? extends Activity> activityClass : activityClasses) {
+            tearDownActions.put(activityClass, TearDownAction.FINISH);
+        }
+    }
+
+    /**
      * Returns a list of all activities that were started since the beginning of
      * this test, in the order of their start time.
      */
     public final List<Activity> getStartedActivities() {
-        SortedSet<StartedActivity> startedActivities =
-                new TreeSet<StartedActivity>(
-                        new Comparator<StartedActivity>() {
-                            public int compare(StartedActivity a1, StartedActivity a2) {
-                                return (int) (a1.getStartTime() - a2.getStartTime());
-                            };
-                        });
+        SortedSet<StartedActivity> startedActivities = new TreeSet<StartedActivity>(
+                new Comparator<StartedActivity>() {
+                    public int compare(StartedActivity a1, StartedActivity a2) {
+                        return (int) (a1.getStartTime() - a2.getStartTime());
+                    };
+                });
 
         startedActivities.addAll(activityMonitor.getStartedActivities());
 
@@ -264,19 +367,16 @@ public class MarvinTestCase extends InstrumentationTestCase {
         return bindService(serviceIntent, null, flags, timeout, timeUnit);
     }
 
-    /**
-     * Define a new chain of assertions for the given activity.
-     * 
-     * @param <T>
-     *            the activity type
-     * @param activity
-     *            the activity you want to define the assertion for
-     * @return an {@link ActivityAssertion} object on which you can call methods
-     *         to continue the chain and thus define the actual assertion(s)
-     */
-    public final <T extends Activity> ActivityAssertion<T> assertThat(T activity) {
-        return AssertionFactory.newActivityAssertion(
-                activity, getInstrumentation(), activityMonitor);
+    public <T extends Activity> ActivityAction activity(T activity) {
+        return ActionFactory.createActivityAction(getInstrumentation(), activityMonitor, activity);
+    }
+
+    public <T> void assertThat(T actual, Matcher<? super T> matcher) {
+        MatcherAssert.assertThat(actual, matcher);
+    }
+
+    public <T> void assertThat(String reason, T actual, Matcher<? super T> matcher) {
+        MatcherAssert.assertThat(reason, actual, matcher);
     }
 
     /**
@@ -423,18 +523,6 @@ public class MarvinTestCase extends InstrumentationTestCase {
             getInstrumentation().getTargetContext().unbindService(connection);
         }
         serviceConnections.clear();
-
-        Log.d(getClass().getName(), "Assertion instances created during test:");
-        Log.d(getClass().getName(), ActivityAndResultAssertion.class.getName()
-                + ": " + ActivityAndResultAssertion.counter);
-        Log.d(getClass().getName(), ActivityAssertion.class.getName()
-                + ": " + ActivityAssertion.counter);
-        Log.d(getClass().getName(), ConjunctionAssertion.class.getName()
-                + ": " + ConjunctionAssertion.counter);
-        Log.d(getClass().getName(), OperationResultAssertion.class.getName()
-                + ": " + OperationResultAssertion.counter);
-        Log.d(getClass().getName(), ViewAssertion.class.getName()
-                + ": " + ViewAssertion.counter);
 
         activityMonitor.clear();
         getInstrumentation().waitForIdleSync();

@@ -19,12 +19,12 @@ import static org.hamcrest.Matchers.notNullValue;
 
 import org.hamcrest.MatcherAssert;
 
-import de.akquinet.android.marvin.testcase.MarvinServiceTestCase;
+import de.akquinet.android.marvin.ServiceTestCase;
 import de.akquinet.android.marvintest.services.AdderAndroidService;
 import de.akquinet.android.marvintest.services.AdderAndroidService.AdderService;
 
 
-public class ServiceTest extends MarvinServiceTestCase<AdderAndroidService.AdderService> {
+public class ServiceTest extends ServiceTestCase<AdderAndroidService.AdderService> {
     public ServiceTest() {
         super(AdderAndroidService.class);
     }

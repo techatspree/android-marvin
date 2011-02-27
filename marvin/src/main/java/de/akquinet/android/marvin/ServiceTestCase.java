@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.akquinet.android.marvin.testcase;
+package de.akquinet.android.marvin;
 
 import java.util.concurrent.TimeUnit;
 
@@ -41,7 +41,7 @@ import android.app.Service;
  * @param <T>
  *            the service binder type
  */
-public class MarvinServiceTestCase<T> extends MarvinTestCase {
+public class ServiceTestCase<T> extends AndroidTestCase {
     private final Class<? extends Service> androidServiceType;
     private T service;
 
@@ -49,18 +49,18 @@ public class MarvinServiceTestCase<T> extends MarvinTestCase {
     private final TimeUnit timeUnit;
 
     /**
-     * Creates a new {@link MarvinServiceTestCase} that will bind to the Android
+     * Creates a new {@link ServiceTestCase} that will bind to the Android
      * service with the given type.
      * 
      * @param androidServiceType
      *            the class object of the Android service we want to bind to
      */
-    public MarvinServiceTestCase(Class<? extends Service> androidServiceType) {
+    public ServiceTestCase(Class<? extends Service> androidServiceType) {
         this(androidServiceType, 60, TimeUnit.SECONDS);
     }
 
     /**
-     * Creates a new {@link MarvinServiceTestCase} that will bind to the Android
+     * Creates a new {@link ServiceTestCase} that will bind to the Android
      * service with the given type.
      * 
      * @param androidServiceType
@@ -71,7 +71,7 @@ public class MarvinServiceTestCase<T> extends MarvinTestCase {
      * @param timeUnit
      *            the time unit of the timeout parameter
      */
-    public MarvinServiceTestCase(Class<? extends Service> androidServiceType,
+    public ServiceTestCase(Class<? extends Service> androidServiceType,
             int timeout, TimeUnit timeUnit) {
         this.androidServiceType = androidServiceType;
         this.timeout = timeout;

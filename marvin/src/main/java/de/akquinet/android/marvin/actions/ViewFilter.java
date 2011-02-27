@@ -12,21 +12,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.akquinet.android.marvin.assertions;
+package de.akquinet.android.marvin.actions;
 
-import android.app.Activity;
-import android.app.Instrumentation;
-import de.akquinet.android.marvin.monitor.ExtendedActivityMonitor;
+import android.view.View;
 
 
-public class AssertionFactory {
-    private AssertionFactory() {
-    }
-
-    public static <T extends Activity> ActivityAssertion<T> newActivityAssertion(
-            T activity, Instrumentation instrumentation,
-            ExtendedActivityMonitor activityMonitor) {
-        return new ActivityAssertionImpl<T>(
-                new AssertionContext<T>(activity, instrumentation, activityMonitor));
-    }
+public interface ViewFilter
+{
+    boolean accept(View view);
 }

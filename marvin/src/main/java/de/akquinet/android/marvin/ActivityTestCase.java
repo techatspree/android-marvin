@@ -12,16 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.akquinet.android.marvin.testcase;
+package de.akquinet.android.marvin;
 
 import android.app.Activity;
-import de.akquinet.android.marvin.assertions.ActivityAssertion;
-import de.akquinet.android.marvin.assertions.AssertionFactory;
+import android.view.View;
+import de.akquinet.android.marvin.actions.ActivityAction;
 
 
 /**
  * <p>
- * Base test case class for Marvin tests that focus on a single {@link Activity}.
+ * Base test case class for tests that focus on a single {@link Activity}.
  * 
  * <p>
  * Extend this class and, in your parameterless constructor, call super with the
@@ -43,24 +43,13 @@ import de.akquinet.android.marvin.assertions.AssertionFactory;
  * @param <T>
  *            the activity type
  */
-public class MarvinActivityTestCase<T extends Activity>
-        extends MarvinTestCase {
+public class ActivityTestCase<T extends Activity>
+        extends AndroidTestCase {
     private final Class<T> activityType;
     private T activity;
 
-    public MarvinActivityTestCase(Class<T> activityType) {
+    public ActivityTestCase(Class<T> activityType) {
         this.activityType = activityType;
-    }
-
-    /**
-     * Define a new chain of assertions for the activity under test.
-     * 
-     * @return an {@link ActivityAssertion} object on which you can call methods
-     *         to continue the chain and thus define the actual assertion(s)
-     */
-    public ActivityAssertion<T> assertThat() {
-        return AssertionFactory.newActivityAssertion(
-                this.activity, getInstrumentation(), activityMonitor);
     }
 
     /**
@@ -68,6 +57,21 @@ public class MarvinActivityTestCase<T extends Activity>
      */
     protected T getActivity() {
         return this.activity;
+    }
+
+    protected ActivityAction activity() {
+        return activity(this.activity);
+    }
+
+    /**
+     * @return the root view of the activity under test
+     */
+    protected View rootView() {
+        return this.activity.getWindow().getDecorView();
+    }
+
+    protected View findView(int id) {
+        return this.activity.findViewById(id);
     }
 
     @Override

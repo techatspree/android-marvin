@@ -23,38 +23,39 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 
 
-public class ActivityC extends Activity
-{
-	public static final int CONTENT_VIEW_ID = 54321;
-	public int keyIdentifier=-1;
-	public boolean actionIdentifierUp = false;
-	public boolean actionIdentifierDown = false;
-	
-    @Override
-	protected void onCreate(Bundle savedInstanceState) {
-    	View layout = new LinearLayout(this);
-    	layout.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.FILL_PARENT));
-    	layout.setId(CONTENT_VIEW_ID);
-    	
-    	layout.setOnKeyListener(new OnKeyListener(){
+public class ActivityC extends Activity {
+    public static final int CONTENT_VIEW_ID = 54321;
+    public int keyIdentifier = -1;
+    public boolean actionIdentifierUp = false;
+    public boolean actionIdentifierDown = false;
 
-			@Override
-			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				keyIdentifier = keyCode;
-				
-				if(event.getAction()==KeyEvent.ACTION_DOWN)actionIdentifierDown=true;
-				else if(event.getAction()==KeyEvent.ACTION_UP)actionIdentifierUp=true;
-				return true;
-			}
-    		
-    	});
-    	
-    	setContentView(layout);
-    	
-    	layout.setFocusable(true);
-    	layout.setFocusableInTouchMode(true);
-    	layout.requestFocus();
-    	
-    	super.onCreate(savedInstanceState);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        View layout = new LinearLayout(this);
+        layout.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+        layout.setId(CONTENT_VIEW_ID);
+
+        layout.setOnKeyListener(new OnKeyListener() {
+
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                keyIdentifier = keyCode;
+
+                if (event.getAction() == KeyEvent.ACTION_DOWN)
+                    actionIdentifierDown = true;
+                else if (event.getAction() == KeyEvent.ACTION_UP)
+                    actionIdentifierUp = true;
+                return true;
+            }
+
+        });
+
+        setContentView(layout);
+
+        layout.setFocusable(true);
+        layout.setFocusableInTouchMode(true);
+        layout.requestFocus();
+
+        super.onCreate(savedInstanceState);
     }
 }
