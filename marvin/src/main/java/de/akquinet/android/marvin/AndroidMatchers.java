@@ -17,11 +17,13 @@ package de.akquinet.android.marvin;
 import org.hamcrest.Matcher;
 
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import de.akquinet.android.marvin.matchers.HasText;
 import de.akquinet.android.marvin.matchers.IsEnabled;
 import de.akquinet.android.marvin.matchers.IsOnScreen;
 import de.akquinet.android.marvin.matchers.IsVisible;
+import de.akquinet.android.marvin.matchers.ViewGroupComparison;
 
 
 /**
@@ -29,7 +31,8 @@ import de.akquinet.android.marvin.matchers.IsVisible;
  * 
  * @author Philipp Kumar
  */
-public class AndroidMatchers {
+public class AndroidMatchers
+{
     /**
      * Evaluates to true if the value is a {@link TextView} with a text equal to
      * the parameter.
@@ -72,5 +75,28 @@ public class AndroidMatchers {
      */
     public static <T extends View> Matcher<T> isNotVisible() {
         return IsVisible.<T> isNotVisible();
+    }
+
+    /**
+     * Has the {@link ViewGroup} more children than value?
+     */
+    public static <T extends ViewGroup> Matcher<T> equalChildrenCountAs(final int value) {
+        return ViewGroupComparison.<T> equalChildrenCountAs(value);
+    }
+
+    public static <T extends ViewGroup> Matcher<T> lessChildrenOrEqual(final int value) {
+        return ViewGroupComparison.<T> lessChildrenOrEqual(value);
+    }
+
+    public static <T extends ViewGroup> Matcher<T> lessChildrenThan(final int value) {
+        return ViewGroupComparison.<T> lessChildrenThan(value);
+    }
+
+    public static <T extends ViewGroup> Matcher<T> moreChildrenOrEqual(final int value) {
+        return ViewGroupComparison.<T> moreChildrenOrEqual(value);
+    }
+
+    public static <T extends ViewGroup> Matcher<T> moreChildrenThan(final int value) {
+        return ViewGroupComparison.<T> moreChildrenThan(value);
     }
 }
