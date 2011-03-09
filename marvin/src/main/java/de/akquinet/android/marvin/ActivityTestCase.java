@@ -44,7 +44,8 @@ import de.akquinet.android.marvin.actions.ActivityAction;
  *            the activity type
  */
 public class ActivityTestCase<T extends Activity>
-        extends AndroidTestCase {
+        extends AndroidTestCase
+{
     private final Class<T> activityType;
     private T activity;
 
@@ -66,7 +67,7 @@ public class ActivityTestCase<T extends Activity>
     /**
      * @return the root view of the activity under test
      */
-    protected View rootView() {
+    protected final View rootView() {
         return this.activity.getWindow().getDecorView();
     }
 

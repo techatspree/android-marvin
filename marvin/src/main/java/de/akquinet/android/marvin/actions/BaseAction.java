@@ -7,11 +7,13 @@ import android.view.MotionEvent;
 import de.akquinet.android.marvin.monitor.ExtendedActivityMonitor;
 
 
-public interface BaseAction {
+public interface BaseAction
+{
 }
 
 
-class BaseActionImpl implements BaseAction {
+class BaseActionImpl implements BaseAction
+{
     private final long startTimestamp;
     private long lastOperationTimestamp = 0;
 
@@ -44,7 +46,7 @@ class BaseActionImpl implements BaseAction {
         return activityMonitor;
     }
 
-    protected void click(float x, float y) {
+    public void click(float x, float y) {
         MotionEvent downEvent = MotionEvent.obtain(SystemClock.uptimeMillis(),
                 SystemClock.uptimeMillis(), MotionEvent.ACTION_DOWN, x, y, 0);
         MotionEvent upEvent = MotionEvent.obtain(SystemClock.uptimeMillis(),

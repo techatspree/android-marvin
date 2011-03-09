@@ -9,7 +9,13 @@ import android.widget.TextView;
 import de.akquinet.android.marvin.monitor.ExtendedActivityMonitor;
 
 
-public interface ActivityAction {
+public interface ActivityAction
+{
+    /**
+     * Clicks on the given coordinates.
+     */
+    void click(float x, float y);
+
     /**
      * Flips orientation of this activity from portrait to landscape and vice
      * versa.
@@ -47,7 +53,8 @@ public interface ActivityAction {
 }
 
 
-class ActivityActionImpl<T extends Activity> extends BaseActionImpl implements ActivityAction {
+class ActivityActionImpl<T extends Activity> extends BaseActionImpl implements ActivityAction
+{
     private final T activity;
 
     public ActivityActionImpl(Instrumentation instrumentation,
