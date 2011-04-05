@@ -31,7 +31,8 @@ import android.content.IntentFilter;
 import android.util.Log;
 
 
-public class ExtendedActivityMonitor {
+public class ExtendedActivityMonitor
+{
     private static final int CHECK_FOR_INTERRUPT_CYCLE_DURATION = 3000;
 
     private Thread activityMonitorThread;
@@ -45,7 +46,8 @@ public class ExtendedActivityMonitor {
     private Map<Class<? extends Activity>, List<ActivityStartListener>> activityStartListeners =
             new HashMap<Class<? extends Activity>, List<ActivityStartListener>>();
 
-    public interface ActivityStartListener {
+    public interface ActivityStartListener
+    {
         void started(Activity activity);
     }
 
@@ -77,6 +79,12 @@ public class ExtendedActivityMonitor {
                     long startTime = System.currentTimeMillis();
 
                     if (activity != null) {
+                        int activitiesCount = startedActivities.size();
+                        if (activitiesCount > 0
+                                && startedActivities.get(activitiesCount - 1).getActivity() == activity) {
+                            continue;
+                        }
+
                         // ok we got an activity, save the instance
                         synchronized (startedActivities) {
                             startedActivities.add(new StartedActivity(activity,
@@ -141,6 +149,14 @@ public class ExtendedActivityMonitor {
             return (T) mostRecentlyStartedActivity;
         }
 
+        int startedActivitiesCount = startedActivities.size();
+        if (startedActivitiesCount > 0) {
+            StartedActivity startedActivity = startedActivities.get(startedActivitiesCount - 1);
+            if (startedActivity.getActivity().getClass().equals(activityClass)) {
+                return (T) startedActivity.getActivity();
+            }
+        }
+
         // we need some kind of container to be shared between two threads
         final List<T> activityContainer = new LinkedList<T>();
 
@@ -162,7 +178,7 @@ public class ExtendedActivityMonitor {
             try {
                 long time = System.currentTimeMillis();
                 while (activityContainer.isEmpty()) {
-                    activityContainer.wait(timeoutInMs);
+                    activityContainer.wait(2000);
                     if (System.currentTimeMillis() - time > timeoutInMs) {
                         return null;
                     }
@@ -218,7 +234,8 @@ public class ExtendedActivityMonitor {
         }
     }
 
-    class ActivityStartListenerUpdater implements Callable<Void> {
+    class ActivityStartListenerUpdater implements Callable<Void>
+    {
         private final Activity activity;
 
         public ActivityStartListenerUpdater(Activity activity) {
