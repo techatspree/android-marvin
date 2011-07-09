@@ -46,22 +46,6 @@
         </plugins>
     </build>
 
-    <distributionManagement>
-        <repository>
-            <id>ats.releases</id>
-            <name>ATS Maven Repository</name>
-            <url>http://nexus.spree.de:8081/nexus/content/repositories/releases</url>
-            <uniqueVersion>false</uniqueVersion>
-        </repository>
-
-        <snapshotRepository>
-            <id>ats.snapshots</id>
-            <name>ATS Snapshot Repository</name>
-            <url>http://nexus.spree.de:8081/nexus/content/repositories/snapshots</url>
-            <uniqueVersion>false</uniqueVersion>
-        </snapshotRepository>
-    </distributionManagement>
-
     <scm>
         <connection>scm:svn:https://www.spree.de/svn-repository/go-mobile/android/marvin/trunk/marvin</connection>
         <developerConnection>scm:svn:https://www.spree.de/svn-repository/go-mobile/android/marvin/trunk/marvin</developerConnection>
