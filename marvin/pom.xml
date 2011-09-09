@@ -17,10 +17,8 @@
         <version>0.2.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>de.akquinet.android.marvin</groupId>
     <artifactId>marvin</artifactId>
     <packaging>jar</packaging>
-    <version>0.2.1-SNAPSHOT</version>
 
     <name>marvin</name>
     <description>Marvin is a framework for writing Android integration tests.</description>
@@ -45,11 +43,5 @@
             </plugin>
         </plugins>
     </build>
-
-    <scm>
-        <connection>scm:svn:https://www.spree.de/svn-repository/go-mobile/android/marvin/trunk/marvin</connection>
-        <developerConnection>scm:svn:https://www.spree.de/svn-repository/go-mobile/android/marvin/trunk/marvin</developerConnection>
-        <url>https://www.spree.de/svn-repository/go-mobile/android/marvin/trunk/marvin</url>
-    </scm>
 
 </project>

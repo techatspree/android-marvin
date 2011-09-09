@@ -27,9 +27,9 @@ import de.akquinet.android.marvin.actions.ActivityAction;
  * Extend this class and, in your parameterless constructor, call super with the
  * class object of the activity you want to test. The activity will be
  * automatically started during {@link #setUp()} and finished during
- * {@link #tearDown()}, as well as any other activity started directly or
- * indirectly during this test (be sure to call super when you overwrite those
- * methods).
+ * {@link #tearDown()} (be sure to call super when you overwrite those methods)
+ * as well as any other activity started directly or indirectly during this
+ * test.
  * 
  * <p>
  * The activity instance is obtained by calling {@link #getActivity()}.

@@ -68,7 +68,8 @@ import de.akquinet.android.marvin.util.TemporaryServiceConnection;
  * 
  * @author Philipp Kumar
  */
-public class AndroidTestCase extends InstrumentationTestCase {
+public class AndroidTestCase extends InstrumentationTestCase
+{
     /** Activity monitor keeping track of started activites */
     protected ExtendedActivityMonitor activityMonitor;
 
@@ -92,8 +93,8 @@ public class AndroidTestCase extends InstrumentationTestCase {
 
     /**
      * Launches a new {@link Activity} of the given type, wait for it to start
-     * and return the correspoding activity instance. The activity is later
-     * closed on {@link #tearDown()} per default.
+     * and return the corresponding activity instance. The activity is later
+     * finished on {@link #tearDown()} per default.
      * <p>
      * The function returns as soon as the activity goes idle following the call
      * to its {@link Activity#onCreate}. Generally this means it has gone
@@ -558,7 +559,8 @@ public class AndroidTestCase extends InstrumentationTestCase {
         return false;
     }
 
-    private enum TearDownAction {
+    private enum TearDownAction
+    {
         LEAVE_RUNNING, FINISH;
     }
 }
