@@ -120,6 +120,7 @@ public class ActivityControlTest extends AndroidTestCase {
         MatcherAssert.assertThat(editText, hasText("true"));
     }
 
+    // TODO: Fix this test
     public void testClick() {
 //        assertEmptyActivityList();
 //
