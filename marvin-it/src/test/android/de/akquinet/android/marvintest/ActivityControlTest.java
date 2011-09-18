@@ -51,8 +51,6 @@ public class ActivityControlTest extends AndroidTestCase {
     }
 
     public void testKeyDownUp() {
-        assertEmptyActivityList();
-
         ActivityC startActivity = startActivity(ActivityC.class);
         waitForIdle();
 
@@ -67,8 +65,6 @@ public class ActivityControlTest extends AndroidTestCase {
     }
 
     public void testKey() {
-        assertEmptyActivityList();
-
         ActivityC startActivity = startActivity(ActivityC.class);
         waitForIdle();
 
@@ -80,8 +76,6 @@ public class ActivityControlTest extends AndroidTestCase {
     }
 
     public void testFinish() {
-        assertEmptyActivityList();
-
         ActivityB activity = startActivity(ActivityB.class);
         waitForIdle();
 
@@ -92,8 +86,6 @@ public class ActivityControlTest extends AndroidTestCase {
     }
 
     public void testFlipOrientation() {
-        assertEmptyActivityList();
-
         ActivityB startActivity = startActivity(ActivityB.class);
         waitForIdle();
 
@@ -106,8 +98,6 @@ public class ActivityControlTest extends AndroidTestCase {
     }
 
     public void testSendString() {
-        assertEmptyActivityList();
-
         ActivityB startActivity = startActivity(ActivityB.class);
         waitForIdle();
 
@@ -121,7 +111,7 @@ public class ActivityControlTest extends AndroidTestCase {
     }
 
     // TODO: Fix this test
-    public void testClick() {
+//    public void testClick() {
 //        assertEmptyActivityList();
 //
 //        ActivityB startActivity = startActivity(ActivityB.class);
@@ -131,11 +121,9 @@ public class ActivityControlTest extends AndroidTestCase {
 //
 //        MatcherAssert.assertThat(startActivity.clickIdentifier,
 //                equalTo(ActivityB.CLICK));
-    }
+//    }
 
     public void testSetOrientation() {
-        assertEmptyActivityList();
-
         ActivityB startActivity = startActivity(ActivityB.class);
         startActivity
                 .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -150,16 +138,13 @@ public class ActivityControlTest extends AndroidTestCase {
     }
 
     public void testStartsActivity() {
-        assertEmptyActivityList();
-
-        ActivityA startActivity = startActivity(ActivityA.class);
+        ActivityB startActivity = startActivity(ActivityB.class);
         MatcherAssert.assertThat(startActivity, is(notNullValue()));
 
-        waitForActivity(ActivityA.class, 30, TimeUnit.SECONDS);
+        waitForActivity(ActivityB.class, 30, TimeUnit.SECONDS);
     }
 
     public void testGetMostRecentlyStartedActivity() {
-
         final ActivityB startActivity = startActivity(ActivityB.class);
         MatcherAssert.assertThat(startActivity, notNullValue());
 
@@ -170,8 +155,6 @@ public class ActivityControlTest extends AndroidTestCase {
     public void testGetStartedActivities() {
         boolean aBool = false;
         boolean bBool = false;
-
-        assertEmptyActivityList();
 
         ActivityA aActivity = startActivity(ActivityA.class);
         MatcherAssert.assertThat(aActivity, notNullValue());
