@@ -518,6 +518,7 @@ public class AndroidTestCase extends InstrumentationTestCase
                 }
             }
         }
+        activityMonitor.clear();
 
         // Unbind services that were bound using bindService(..) methods
         for (ServiceConnection connection : serviceConnections.values()) {
@@ -525,7 +526,6 @@ public class AndroidTestCase extends InstrumentationTestCase
         }
         serviceConnections.clear();
 
-        activityMonitor.clear();
         getInstrumentation().waitForIdleSync();
 
         super.tearDown();

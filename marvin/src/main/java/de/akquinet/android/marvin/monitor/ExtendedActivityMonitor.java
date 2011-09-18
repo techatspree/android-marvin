@@ -33,7 +33,9 @@ import android.util.Log;
 
 public class ExtendedActivityMonitor
 {
-    private static final int CHECK_FOR_INTERRUPT_CYCLE_DURATION = 3000;
+    private static final int CHECK_FOR_INTERRUPT_CYCLE_DURATION = 10000;
+    
+    private volatile boolean stopped = false;
 
     private Thread activityMonitorThread;
     private ActivityMonitor activityInstanceMonitor;
@@ -96,7 +98,8 @@ public class ExtendedActivityMonitor
                         executor.submit(new ActivityStartListenerUpdater(
                                 activity));
                     }
-                    if (isInterrupted()) {
+                    if (interrupted() || stopped) {
+                        executor.shutdown();
                         // We were interrupted, stop waiting for new activites.
                         return;
                     }
@@ -107,6 +110,7 @@ public class ExtendedActivityMonitor
 
     public void start() {
         this.activityMonitorThread.start();
+        stopped = false;
     }
 
     /**
@@ -200,6 +204,7 @@ public class ExtendedActivityMonitor
     }
 
     public void stop() {
+        stopped = true;
         activityMonitorThread.interrupt();
     }
 
