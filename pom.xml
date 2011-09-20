@@ -18,7 +18,7 @@
 
     <groupId>de.akquinet.android.marvin</groupId>
     <artifactId>marvin-project</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <parent>
@@ -133,6 +133,7 @@
                 <configuration>
                     <useReleaseProfile>true</useReleaseProfile>
                     <goals>deploy</goals>
+					<arguments>-Pit,release</arguments>
                 </configuration>
             </plugin>
         </plugins>
@@ -173,6 +174,9 @@
 
         <profile>
             <id>release</id>
+			<modules>
+                <module>marvin-it</module>
+            </modules>
             <build>
                 <plugins>
                     <plugin>
