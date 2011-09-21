@@ -1,9 +1,15 @@
 Marvin is an integration testing framework for Android.
 
-Compared to other Android testing frameworks, Marvin focusses on testing multiple
-activities and the interaction between them as well as testing Android services.
+Compared to other Android testing frameworks, Marvin focuses on testing program
+flows involving multiple activities and the interaction between them.
+Without having to dive into the details of Android Instrumentation, one
+can write powerful tests that are easy to read and maintain, through the use
+of Marvin's simple API.
+
+Marvin also eases testing your business logic encapsulated in Android services.
 
 
 Credits
 -------
-Marvin is an open source project licensed under the Apache License 2.0. It is founded by akquinet (http://akquinet.de/en). Marvin is part of the StAnD (http://stand.spree.de).
+Marvin is an open source project licensed under the Apache License 2.0. It is
+founded by akquinet (http://akquinet.de/en). Marvin is part of the StAnD (http://stand.spree.de).
