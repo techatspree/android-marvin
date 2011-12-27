@@ -148,6 +148,8 @@ public class ActivityControlTest extends AndroidTestCase {
         final ActivityB startActivity = startActivity(ActivityB.class);
         MatcherAssert.assertThat(startActivity, notNullValue());
 
+        waitForActivity(ActivityB.class, 10, TimeUnit.SECONDS);
+
         Activity recentlyStarted = getMostRecentlyStartedActivity();
         MatcherAssert.assertThat(startActivity, sameInstance(recentlyStarted));
     }

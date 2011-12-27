@@ -14,11 +14,7 @@
  */
 package de.akquinet.android.marvin.monitor;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -118,11 +114,30 @@ public class ExtendedActivityMonitor
      * will be the activity currently visible on screen.
      */
     public Activity getMostRecentlyStartedActivity() {
-        return activityInstanceMonitor.getLastActivity();
+        List<StartedActivity> activities = getStartedActivities();
+
+        if (activities.size() == 0) {
+            return null;
+        }
+
+        return activities.get(activities.size() - 1).getActivity();
     }
 
     public List<StartedActivity> getStartedActivities() {
+        List<StartedActivity> result = new ArrayList<StartedActivity>();
+        
         synchronized (startedActivities) {
+            Iterator<StartedActivity> iter = startedActivities.iterator();
+            while (iter.hasNext()) {
+                StartedActivity activity = iter.next();
+                if (activity.getActivity().isFinishing()) {
+                    iter.remove();
+                }
+                else {
+                    result.add(activity);
+                }
+            }
+
             return new LinkedList<StartedActivity>(startedActivities);
         }
     }
