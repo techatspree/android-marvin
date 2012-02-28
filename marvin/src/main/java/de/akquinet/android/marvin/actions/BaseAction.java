@@ -17,8 +17,8 @@ class BaseActionImpl implements BaseAction
     private final long startTimestamp;
     private long lastOperationTimestamp = 0;
 
-    private final Instrumentation instrumentation;
-    private final ExtendedActivityMonitor activityMonitor;
+    protected final Instrumentation instrumentation;
+    protected final ExtendedActivityMonitor activityMonitor;
 
     public BaseActionImpl(Instrumentation instrumentation, ExtendedActivityMonitor activityMonitor) {
         this.startTimestamp = System.currentTimeMillis();
@@ -38,22 +38,14 @@ class BaseActionImpl implements BaseAction
         this.lastOperationTimestamp = System.currentTimeMillis();
     }
 
-    public Instrumentation getInstrumentation() {
-        return instrumentation;
-    }
-
-    public ExtendedActivityMonitor getActivityMonitor() {
-        return activityMonitor;
-    }
-
     public void click(float x, float y) {
         MotionEvent downEvent = MotionEvent.obtain(SystemClock.uptimeMillis(),
                 SystemClock.uptimeMillis(), MotionEvent.ACTION_DOWN, x, y, 0);
         MotionEvent upEvent = MotionEvent.obtain(SystemClock.uptimeMillis(),
                 SystemClock.uptimeMillis(), MotionEvent.ACTION_UP, x, y, 0);
         try {
-            getInstrumentation().sendPointerSync(downEvent);
-            getInstrumentation().sendPointerSync(upEvent);
+            instrumentation.sendPointerSync(downEvent);
+            instrumentation.sendPointerSync(upEvent);
         }
         catch (SecurityException e) {
             Assert.fail("Click on (" + x + "," + y + ") failed.");

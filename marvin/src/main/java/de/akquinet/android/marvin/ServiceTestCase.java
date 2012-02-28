@@ -90,7 +90,7 @@ public class ServiceTestCase<T> extends AndroidTestCase {
     protected void setUp() throws Exception {
         super.setUp();
 
-        this.service = (T) bindService(androidServiceType, timeout, timeUnit);
+        this.service = (T) perform().bindService(androidServiceType, timeout, timeUnit);
     }
 
     @Override

@@ -37,95 +37,36 @@ public class ViewAssertionsTest extends AndroidTestCase {
                 Matchers.<Activity> empty());
     }
 
-    public void testDoesNotExist() {
-        assertEmptyActivityList();
-
-        ActivityB startActivity = startActivity(ActivityB.class);
-        MatcherAssert.assertThat(startActivity, notNullValue());
-
-        assertThat(activity(startActivity).view(0).getView(), nullValue());
-    }
-
-    public void testExists() {
-        assertEmptyActivityList();
-
-        ActivityB startActivity = startActivity(ActivityB.class);
-        MatcherAssert.assertThat(startActivity, notNullValue());
-
-        assertThat(activity(startActivity)
-                .view(ActivityB.CONTENT_VIEW_ID), notNullValue());
-    }
-
-    public void testIsVisible() {
-        assertEmptyActivityList();
-
-        ActivityB startActivity = startActivity(ActivityB.class);
-        MatcherAssert.assertThat(startActivity, notNullValue());
-
-        assertThat(startActivity.findViewById(ActivityB.CONTENT_VIEW_ID),
-                isVisible());
-    }
-
-    public void testIsEnabled() {
-        assertEmptyActivityList();
-
-        ActivityB startActivity = startActivity(ActivityB.class);
-        MatcherAssert.assertThat(startActivity, is(notNullValue()));
-
-        assertThat(startActivity.findViewById(ActivityB.CONTENT_VIEW_ID),
-                isEnabled());
-    }
-
     public void testIsOnScreen() {
         assertEmptyActivityList();
 
-        ActivityB startActivity = startActivity(ActivityB.class);
+        ActivityB startActivity = perform().startActivity(ActivityB.class);
         MatcherAssert.assertThat(startActivity, is(notNullValue()));
 
         assertThat(startActivity.findViewById(ActivityB.CONTENT_VIEW_ID),
-                isOnScreen(activity(startActivity).rootView().getView()));
+                isOnScreen(activity(startActivity).view().root().get()));
     }
 
     public void testFindTextViewHasText() {
         assertEmptyActivityList();
 
-        ActivityB startActivity = startActivity(ActivityB.class);
+        ActivityB startActivity = perform().startActivity(ActivityB.class);
         MatcherAssert.assertThat(startActivity, is(notNullValue()));
 
         // @formatter:off
-         assertThat(activity(startActivity).findTextView("42").getView(), 
+         assertThat(activity(startActivity).view().withText("42").get(),
          		hasText("42"));
          // @formatter:on
-    }
-
-    public void testIsDisabled() {
-        assertEmptyActivityList();
-
-        ActivityB startActivity = startActivity(ActivityB.class);
-        MatcherAssert.assertThat(startActivity, is(notNullValue()));
-
-        assertThat(startActivity.findViewById(ActivityB.TEXT_VIEW_ID),
-                not(isEnabled()));
-    }
-
-    public void testIsNotVisible() {
-        assertEmptyActivityList();
-
-        ActivityB startActivity = startActivity(ActivityB.class);
-        MatcherAssert.assertThat(startActivity, notNullValue());
-
-        assertThat(startActivity.findViewById(ActivityB.TEXT_VIEW_ID),
-                not(isVisible()));
     }
 
     public void testSetText() {
         assertEmptyActivityList();
 
-        ActivityB startActivity = startActivity(ActivityB.class);
+        ActivityB startActivity = perform().startActivity(ActivityB.class);
         MatcherAssert.assertThat(startActivity, is(notNullValue()));
 
         activity(startActivity).
-                view(ActivityB.TEXT_VIEW_ID)
+                view().withId(ActivityB.TEXT_VIEW_ID)
                 .setText("What was the question?");
 
         assertThat(startActivity
@@ -136,10 +77,10 @@ public class ViewAssertionsTest extends AndroidTestCase {
     public void testClick() {
         assertEmptyActivityList();
 
-        ActivityB startActivity = startActivity(ActivityB.class);
+        ActivityB startActivity = perform().startActivity(ActivityB.class);
         MatcherAssert.assertThat(startActivity, is(notNullValue()));
 
-        activity(startActivity).view(ActivityB.CONTENT_VIEW_ID).click();
+        activity(startActivity).view().withId(ActivityB.CONTENT_VIEW_ID).click();
 
         assertThat(startActivity.clickIdentifier, equalTo(ActivityB.CLICK));
     }

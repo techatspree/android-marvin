@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 
 public interface ViewAction {
-    View getView();
+    View get();
 
     void click();
 
@@ -23,20 +23,34 @@ class ViewActionImpl<T extends Activity> extends BaseActionImpl implements ViewA
     private final View view;
 
     public ViewActionImpl(ActivityActionImpl<T> activityAction, View view) {
-        super(activityAction.getInstrumentation(), activityAction.getActivityMonitor());
+        super(activityAction.instrumentation, activityAction.activityMonitor);
+
+        this.activity = activityAction.activity;
+        this.view = view;
+    }
+
+    public ViewActionImpl(ActivityActionImpl<T> activityAction, int viewId) {
+        super(activityAction.instrumentation, activityAction.activityMonitor);
+
+        this.activity = activityAction.activity;
+        this.view = activityAction.activity.findViewById(viewId);
+    }
+
+    public ViewActionImpl(FindViewActionImpl<T> activityAction, View view) {
+        super(activityAction.instrumentation, activityAction.activityMonitor);
 
         this.activity = activityAction.getActivity();
         this.view = view;
     }
 
-    public ViewActionImpl(ActivityActionImpl<T> activityAction, int viewId) {
-        super(activityAction.getInstrumentation(), activityAction.getActivityMonitor());
+    public ViewActionImpl(FindViewActionImpl<T> activityAction, int viewId) {
+        super(activityAction.instrumentation, activityAction.activityMonitor);
 
         this.activity = activityAction.getActivity();
         this.view = activityAction.getActivity().findViewById(viewId);
     }
 
-    public View getView() {
+    public View get() {
         return view;
     }
 
@@ -82,7 +96,7 @@ class ViewActionImpl<T extends Activity> extends BaseActionImpl implements ViewA
             click(location[0], location[1]);
         }
 
-        getInstrumentation().waitForIdleSync();
+        instrumentation.waitForIdleSync();
     }
 
     @Override
@@ -101,6 +115,6 @@ class ViewActionImpl<T extends Activity> extends BaseActionImpl implements ViewA
             }
         });
 
-        getInstrumentation().waitForIdleSync();
+        instrumentation.waitForIdleSync();
     }
 }

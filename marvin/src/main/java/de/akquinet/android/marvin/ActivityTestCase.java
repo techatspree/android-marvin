@@ -79,6 +79,6 @@ public class ActivityTestCase<T extends Activity>
     protected void setUp() throws Exception {
         super.setUp();
 
-        this.activity = startActivity(this.activityType);
+        this.activity = perform().startActivity(this.activityType);
     }
 }

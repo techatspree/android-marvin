@@ -37,7 +37,7 @@ public class ServiceBindingTest extends AndroidTestCase {
      */
     public void testBindToExistingService() throws TimeoutException {
         IBinder adderServiceBinder =
-                bindService(AdderAndroidService.class, 10, TimeUnit.SECONDS);
+                perform().bindService(AdderAndroidService.class, 10, TimeUnit.SECONDS);
 
         MatcherAssert.assertThat(adderServiceBinder,
                 instanceOf(AdderService.class));
@@ -52,7 +52,7 @@ public class ServiceBindingTest extends AndroidTestCase {
      */
     public void testBindToNonExistingService() {
         try {
-            bindService(NonExistingServiceImpl.class, 10, TimeUnit.SECONDS);
+            perform().bindService(NonExistingServiceImpl.class, 10, TimeUnit.SECONDS);
         }
         catch (TimeoutException e) {
             // OK

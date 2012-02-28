@@ -50,34 +50,9 @@ public class ActivityControlTest extends AndroidTestCase {
         assertEmptyActivityList();
     }
 
-    public void testKeyDownUp() {
-        ActivityC startActivity = startActivity(ActivityC.class);
-        waitForIdle();
-
-        assertThat(startActivity, is(notNullValue()));
-
-        keyDownUp(KeyEvent.KEYCODE_A);
-
-        assertThat(startActivity.keyIdentifier,
-                is(equalTo(KeyEvent.KEYCODE_A)));
-        assertThat(startActivity.actionIdentifierDown, is(true));
-        assertThat(startActivity.actionIdentifierUp, is(true));
-    }
-
-    public void testKey() {
-        ActivityC startActivity = startActivity(ActivityC.class);
-        waitForIdle();
-
-        MatcherAssert.assertThat(startActivity, notNullValue());
-        key(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_A));
-
-        assertThat(startActivity.keyIdentifier, equalTo(KeyEvent.KEYCODE_A));
-        assertThat(startActivity.actionIdentifierDown, is(true));
-    }
-
     public void testFinish() {
-        ActivityB activity = startActivity(ActivityB.class);
-        waitForIdle();
+        ActivityB activity = perform().startActivity(ActivityB.class);
+        await().idle();
 
         MatcherAssert.assertThat(activity, notNullValue());
         activity(activity).finish();
@@ -86,50 +61,40 @@ public class ActivityControlTest extends AndroidTestCase {
     }
 
     public void testFlipOrientation() {
-        ActivityB startActivity = startActivity(ActivityB.class);
-        waitForIdle();
+        ActivityB startActivity = perform().startActivity(ActivityB.class);
+        await().idle();
 
         MatcherAssert.assertThat(startActivity, notNullValue());
         int startOrientation = startActivity.getRequestedOrientation();
 
         activity(startActivity).flipOrientation();
+        perform().sleep(3000);
         MatcherAssert.assertThat(startActivity.getRequestedOrientation(),
                 not(equalTo(startOrientation)));
     }
 
     public void testSendString() {
-        ActivityB startActivity = startActivity(ActivityB.class);
-        waitForIdle();
+        ActivityB startActivity = perform().startActivity(ActivityB.class);
+        await().idle();
 
         MatcherAssert.assertThat(startActivity, notNullValue());
 
         View editText = startActivity.findViewById(ActivityB.EDIT_TEXT_ID);
         MatcherAssert.assertThat(editText.requestFocus(), is(true));
 
-        sendString("true");
+        perform().instrument().sendStringSync("true");
         MatcherAssert.assertThat(editText, hasText("true"));
     }
 
-    // TODO: Fix this test
-//    public void testClick() {
-//        assertEmptyActivityList();
-//
-//        ActivityB startActivity = startActivity(ActivityB.class);
-//        MatcherAssert.assertThat(startActivity, notNullValue());
-//
-//        click(50, 50);
-//
-//        MatcherAssert.assertThat(startActivity.clickIdentifier,
-//                equalTo(ActivityB.CLICK));
-//    }
-
     public void testSetOrientation() {
-        ActivityB startActivity = startActivity(ActivityB.class);
+        ActivityB startActivity = perform().startActivity(ActivityB.class);
         startActivity
                 .setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        perform().sleep(3000);
         MatcherAssert.assertThat(startActivity, is(notNullValue()));
         MatcherAssert.assertThat(startActivity.getRequestedOrientation(),
                 is(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE));
+        perform().sleep(3000);
 
         activity(startActivity).setOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
@@ -138,19 +103,19 @@ public class ActivityControlTest extends AndroidTestCase {
     }
 
     public void testStartsActivity() {
-        ActivityB startActivity = startActivity(ActivityB.class);
+        ActivityB startActivity = perform().startActivity(ActivityB.class);
         MatcherAssert.assertThat(startActivity, is(notNullValue()));
 
-        waitForActivity(ActivityB.class, 30, TimeUnit.SECONDS);
+        await().activity(ActivityB.class, 30, TimeUnit.SECONDS);
     }
 
     public void testGetMostRecentlyStartedActivity() {
-        final ActivityB startActivity = startActivity(ActivityB.class);
+        final ActivityB startActivity = perform().startActivity(ActivityB.class);
         MatcherAssert.assertThat(startActivity, notNullValue());
 
-        waitForActivity(ActivityB.class, 10, TimeUnit.SECONDS);
+        await().activity(ActivityB.class, 10, TimeUnit.SECONDS);
 
-        Activity recentlyStarted = getMostRecentlyStartedActivity();
+        Activity recentlyStarted = getActivityMonitor().getMostRecentlyStartedActivity();
         MatcherAssert.assertThat(startActivity, sameInstance(recentlyStarted));
     }
 
@@ -158,10 +123,10 @@ public class ActivityControlTest extends AndroidTestCase {
         boolean aBool = false;
         boolean bBool = false;
 
-        ActivityA aActivity = startActivity(ActivityA.class);
+        ActivityA aActivity = perform().startActivity(ActivityA.class);
         MatcherAssert.assertThat(aActivity, notNullValue());
 
-        sleep(2000);
+        perform().sleep(2000);
 
         List<Activity> actList = getStartedActivities();
 
