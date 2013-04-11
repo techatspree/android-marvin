@@ -14,27 +14,20 @@
  */
 package de.akquinet.android.marvintest;
 
-import static de.akquinet.android.marvin.AndroidMatchers.hasText;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.sameInstance;
-
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
-import android.view.KeyEvent;
 import android.view.View;
 import de.akquinet.android.marvin.AndroidTestCase;
 import de.akquinet.android.marvintest.activities.ActivityA;
 import de.akquinet.android.marvintest.activities.ActivityB;
-import de.akquinet.android.marvintest.activities.ActivityC;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import static de.akquinet.android.marvin.AndroidMatchers.hasText;
+import static org.hamcrest.Matchers.*;
 
 
 public class ActivityControlTest extends AndroidTestCase {
@@ -102,8 +95,17 @@ public class ActivityControlTest extends AndroidTestCase {
                 is(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT));
     }
 
+    public void testStartsActivityIndirect() {
+        ActivityA startActivity = perform().startActivity(ActivityA.class);
+        MatcherAssert.assertThat(startActivity, is(notNullValue()));
+
+        ActivityB activityB = await().activity(ActivityB.class, 30, TimeUnit.SECONDS);
+        assertThat(activityB, is(not(nullValue())));
+    }
+
+
     public void testStartsActivity() {
-        ActivityB startActivity = perform().startActivity(ActivityB.class);
+        ActivityA startActivity = perform().startActivity(ActivityA.class);
         MatcherAssert.assertThat(startActivity, is(notNullValue()));
 
         await().activity(ActivityB.class, 30, TimeUnit.SECONDS);

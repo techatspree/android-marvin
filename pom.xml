@@ -32,6 +32,10 @@
     <url>http://stand.spree.de</url>
     <inceptionYear>2010</inceptionYear>
 
+    <properties>
+        <ats.project.name.in.repo>stand</ats.project.name.in.repo>
+    </properties>
+
     <modules>
         <module>marvin</module>
     </modules>

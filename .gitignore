@@ -6,3 +6,4 @@ target
 /.classpath
 marvin-it/lib
 *.iml
+.idea/
