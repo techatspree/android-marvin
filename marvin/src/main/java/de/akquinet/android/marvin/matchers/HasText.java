@@ -27,9 +27,13 @@ public class HasText<T> extends TypeSafeMatcher<T> {
     }
     
     protected void describeMismatchSafely(T actual, Description mismatchDescription) {
-        mismatchDescription.appendValue(actual) .appendText(" had text ")
-        .appendText(expected)
-        .appendText(" ").appendValue(expected);
+        if (actual instanceof TextView) {
+            TextView t = (TextView) actual;
+            mismatchDescription.appendValue(actual) .appendText(" had text \"")
+                    .appendText(t.getText().toString()).appendText("\"");
+        } else {
+            mismatchDescription.appendValue(actual) .appendText(" was not a TextView");
+        }
     }
 
     @Factory
